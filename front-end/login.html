@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dental Clinic - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-blue-100">
+  <div class="bg-white p-8 rounded-2xl shadow-md w-96">
+    <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="text" id="email" placeholder="Email Address"
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+      <input type="password" id="password" placeholder="Password"
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+      <button type="submit"
+        class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Login</button>
+    </form>
+    <p class="mt-4 text-sm text-center">New here?
+      <a href="signup.html" class="text-blue-600 hover:underline">Sign Up</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("http://localhost:5000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // Successful login, redirect to homepage
+          window.location.href = "homepage.html";
+        } else {
+          alert(data.message || "Login failed");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error connecting to server");
+      }
+    });
+  </script>
+</body>
+</html>

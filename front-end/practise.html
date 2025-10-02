@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dentist Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+</head>
+<style>
+    /* Force checkboxes to appear nicely */
+    input[type="checkbox"] {
+      accent-color: #3b82f6; /* Tailwind blue */
+      width: 18px;
+      height: 18px;
+    }
+    /* Cute card style for reports */
+    .report-card {
+      background: #fef9f9;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+  </style>
+<body class="bg-gray-50">
+
+  <nav class="bg-blue-400 shadow-md">
+    <div class="mx-auto flex justify-between items-center p-4">
+      <h1 class="ml-2 text-3xl font-bold drop-shadow-lg">Ma Dental Care</h1>
+      <ul class="flex space-x-3 text-white font-medium">
+        <li><a href="homepage.html" class="hover:text-purple-500">Home</a></li>
+            <li class="hover:text-purple-500">Save n Print</li>
+        
+      </ul>
+    </div>
+  </nav>
+  <main class="p-6 space-y-6">
+
+    <!-- Medical Info -->
+    <div id="medicalInfo" class=" mt-6 w-[1000px] mx-auto ">
+      <!-- First Row: C/C and H/O -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- C/C -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">C/C</h3>
+          <div id="ccConditions" class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Tooth Pain</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Gum Bleeding</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Tooth Sensitivity</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Swelling</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Bad Breath</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Loose Tooth</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Cavity</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Wisdom Tooth Pain</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Discoloration</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Jaw Pain</span></label>
+            <label><input type="checkbox" class="cc-checkbox"><span class="ml-1">Gum Recession</span></label>
+            <label><input type="text" id="ccOther" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+
+        <!-- H/O -->
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">H/O</h3>
+          <div class="grid grid-cols-3 gap-2">
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">HTN</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">DM</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">Asthma</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">COPD</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">IHD</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">CKD</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">CVD</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">Smoking</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">Drug Abuse</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">Allergy</span></label>
+            <label><input type="checkbox" class="ho-checkbox"><span class="ml-1">Depression</span></label>
+            <label><input type="text" id="hoOther" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Second Row: O/C (Oral Condition) and Investigations -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- O/C -->
+        <div id="ocConditions" class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">O/C (Oral Condition)</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="oc-checkbox" data-label="Dental Caries"><span class="ml-1">Dental Caries</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Pulpitis"><span class="ml-1">Pulpitis</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Periapical Abscess"><span class="ml-1">Periapical Abscess</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Fractured Tooth"><span class="ml-1">Fractured Tooth</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Attrition"><span class="ml-1">Attrition</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Erosion"><span class="ml-1">Erosion</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Malocclusion"><span class="ml-1">Malocclusion</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Impacted Tooth"><span class="ml-1">Impacted Tooth</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Gingivitis"><span class="ml-1">Gingivitis</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Periodontitis"><span class="ml-1">Periodontitis</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="TMD"><span class="ml-1">Temporomandibular Disorder (TMD)</span></label>
+            <label><input type="checkbox" class="oc-checkbox" data-label="Discoloration"><span class="ml-1">Discoloration/Staining</span></label>
+            <label><input type="text" id="ocOther" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+
+        <!-- Investigations -->
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">Investigations</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">RBS</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">X-ray</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">CT Scan</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">MRI</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">Blood Test</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">Urine Test</span></label>
+            <label><input type="checkbox" class="filled-in"><span class="ml-1">Other</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Third Row: D/D and DX -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">Differential Diagnosis (D/D)</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox"><span class="ml-1">Periodontitis</span></label>
+            <label><input type="checkbox"><span class="ml-1">Gingivitis</span></label>
+            <label><input type="checkbox"><span class="ml-1">Pulpitis</span></label>
+            <label><input type="checkbox"><span class="ml-1">Caries</span></label>
+            <label><input type="checkbox"><span class="ml-1">Periapical Abscess</span></label>
+            <label><input type="checkbox"><span class="ml-1">Malocclusion</span></label>
+            <label><input type="checkbox"><span class="ml-1">TMD</span></label>
+            <label><input type="text" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+
+        <div class="bg-gray-100 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">Diagnosis (DX)</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="dx-checkbox" data-label="Pulpitis"><span class="ml-1">Pulpitis</span></label>
+            <label><input type="checkbox" class="dx-checkbox" data-label="Dental Caries"><span class="ml-1">Dental Caries</span></label>
+            <label><input type="checkbox" class="dx-checkbox" data-label="Periodontitis"><span class="ml-1">Periodontitis</span></label>
+            <label><input type="checkbox" class="dx-checkbox" data-label="Gingivitis"><span class="ml-1">Gingivitis</span></label>
+            <label><input type="checkbox" class="dx-checkbox" data-label="Fractured Tooth"><span class="ml-1">Fractured Tooth</span></label>
+            <label><input type="checkbox" class="dx-checkbox" data-label="Impacted Tooth"><span class="ml-1">Impacted Tooth</span></label>
+            <label><input type="text" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fourth Row: Treatment Plan and Completed Treatment -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <!-- Treatment Plan -->
+        <div id="treatmentPlan" class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">Treatment Plan</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Root Canal"><span class="ml-1">Root Canal</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Teeth Whitening"><span class="ml-1">Teeth Whitening</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Filling"><span class="ml-1">Filling</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Extraction"><span class="ml-1">Extraction</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Scaling & Polishing"><span class="ml-1">Scaling & Polishing</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Orthodontic Treatment"><span class="ml-1">Orthodontic Treatment</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Crowns/Bridges"><span class="ml-1">Crowns/Bridges</span></label>
+            <label><input type="checkbox" class="treatment-checkbox" data-label="Implant"><span class="ml-1">Implant</span></label>
+            <label><input type="text" id="treatmentOther" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+
+        <!-- Completed Treatment -->
+        <div id="completedTreatment" class="bg-gray-100 p-4 rounded-lg">
+          <h3 class="font-semibold mb-2">Completed Treatment</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <label><input type="checkbox" class="completed-checkbox" data-label="Root Canal"><span class="ml-1">Root Canal</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Teeth Whitening"><span class="ml-1">Teeth Whitening</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Filling"><span class="ml-1">Filling</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Extraction"><span class="ml-1">Extraction</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Scaling & Polishing"><span class="ml-1">Scaling & Polishing</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Orthodontic Treatment"><span class="ml-1">Orthodontic Treatment</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Crowns/Bridges"><span class="ml-1">Crowns/Bridges</span></label>
+            <label><input type="checkbox" class="completed-checkbox" data-label="Implant"><span class="ml-1">Implant</span></label>
+            <label><input type="text" id="completedOther" placeholder="Other" class="border p-1 rounded"></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+    <!-- Treatment / Special Notes -->
+    <section class="bg-gray-100 p-4 rounded-lg w-[1000px] mx-auto">
+      <h3 class="font-semibold mb-4 text-blue-600">Treatment / Special Notes</h3>
+      <table class="w-full border border-gray-300">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="border p-2">Note</th>
+            <th class="border p-2">Teeth Involved</th>
+            <th class="border p-2">Date</th>
+          </tr>
+        </thead>
+        <tbody id="notesBody">
+          <tr class="border-b">
+            <!-- Note input -->
+            <td class="border p-2">
+              <input type="text" class="w-full border p-1 rounded" placeholder="Enter note...">
+            </td>
+            <!-- Teeth selection -->
+            <td class="border p-2">
+              <div class="space-y-3">
+                <!-- Upper Jaw -->
+<div>
+  <h4 class="font-semibold text-sm text-gray-700 mb-1">(1–8)</h4>
+  <div class="flex flex-wrap gap-2">
+    <label><input type="checkbox" value="1"><span>1</span></label>
+    <label><input type="checkbox" value="2"><span>2</span></label>
+    <label><input type="checkbox" value="3"><span>3</span></label>
+    <label><input type="checkbox" value="4"><span>4</span></label>
+    <label><input type="checkbox" value="5"><span>5</span></label>
+    <label><input type="checkbox" value="6"><span>6</span></label>
+    <label><input type="checkbox" value="7"><span>7</span></label>
+    <label><input type="checkbox" value="8"><span>8</span></label>
+  </div>
+</div>
+
+<!-- Lower Jaw -->
+<div>
+  <h4 class="font-semibold text-sm text-gray-700 mb-1">(A–E)</h4>
+  <div class="flex flex-wrap gap-2">
+    <label><input type="checkbox" value="A"><span>A</span></label>
+    <label><input type="checkbox" value="B"><span>B</span></label>
+    <label><input type="checkbox" value="C"><span>C</span></label>
+    <label><input type="checkbox" value="D"><span>D</span></label>
+    <label><input type="checkbox" value="E"><span>E</span></label>
+  </div>
+</div>
+</div>
+               </div>
+          <input type="hidden" name="teethSelected" class="teeth-selected">
+        </td>
+        <td class="border p-2">
+          <input type="date" class="border p-1 rounded w-full">
+        </td>
+        <td class="border p-2 text-center">
+          <button type="button" class="bg-red-500 text-white px-2 py-1 rounded deleteRow">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="mt-3">
+    <button id="addRow" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Add Row</button>
+  </div>
+    </section>
+
+   <section class="w-[1200px] mx-auto mt-6">
+  <h3 class="text-xl font-bold text-blue-600 mb-4">💊 Medicines & 💡 Advices</h3>
+  <div class="grid grid-cols-2 gap-6">
+
+    <!-- Medicines Section -->
+    <section class="bg-white p-4 rounded shadow mb-6">
+      <h2 class="text-lg font-semibold mb-2">Medicines</h2>
+      <div id="medicineContainer" class="grid grid-cols-2 gap-4"></div>
+      <button id="addSelectedMedicines" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Add Selected Medicines to Drug History
+      </button>
+    </section>
+
+    <!-- Drug History Table -->
+    <section class="bg-white p-4 rounded shadow mb-6">
+      <h2 class="text-lg font-semibold mb-2">Drug History</h2>
+      <table class="w-full border">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="p-2">Medicine</th>
+            <th class="p-2">Brand</th>
+            <th class="p-2">Strength</th>
+            <th class="p-2">Dosage</th>
+            <th class="p-2">Duration</th>
+            <th class="p-2">Instruction</th>
+            <th class="p-2">Action</th>
+          </tr>
+        </thead>
+        <tbody id="drugHistoryTable"></tbody>
+ </table>
+ <!-- Buttons -->
+  <div class="mt-3 flex space-x-2">
+    <button id="addBlankRow" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      Add Blank Medicine Row
+    </button>
+    <button id="addSelectedMedicines" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Add Selected Medicines
+    </button>
+  </div>
+    </section>
+     
+
+    <!-- Advices Section -->
+    <section class="bg-white p-4 rounded shadow mb-6 col-span-2">
+      <h2 class="text-lg font-semibold mb-2">Advices</h2>
+      <div id="adviceContainer" class="grid grid-cols-2 gap-4"></div>
+    </section>
+
+  </div>
+</section>
+
+<script>
+const medicineData = [];
+
+// === Load Medicines ===
+async function loadMedicines() {
+  try {
+    const res = await fetch("http://localhost:5000/medicines");
+    const medicines = await res.json();
+    medicineData.push(...medicines);
+
+    const container = document.getElementById("medicineContainer");
+    container.innerHTML = "";
+    medicines.forEach(med => {
+      const label = document.createElement("label");
+      label.className = "flex items-center p-2 bg-gray-50 rounded shadow-sm cursor-pointer";
+      label.innerHTML = `
+        <input type="checkbox" class="medicine-checkbox mr-2" value="${med._id}" />
+        <span class="break-words">${med.brand}</span>
+      `;
+      container.appendChild(label);
+    });
+  } catch (err) {
+    console.error("Failed to load medicines:", err);
+    document.getElementById("medicineContainer").innerHTML =
+      `<p class="text-red-500">Error: ${err.message}</p>`;
+  }
+}
+
+// === Load Advices ===
+async function loadAdvices() {
+  try {
+    const res = await fetch("http://localhost:5000/advice");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const advices = await res.json();
+
+    const container = document.getElementById("adviceContainer");
+    container.innerHTML = "";
+    if (!advices.length) {
+      container.innerHTML = `<p class="text-gray-500">No advices found.</p>`;
+      return;
+    }
+
+    advices.forEach(advice => {
+      const label = document.createElement("label");
+      label.className = "flex items-center p-2 bg-gray-50 rounded shadow-sm cursor-pointer";
+      label.innerHTML = `
+        <input type="checkbox" class="advice-checkbox mr-2" value="${advice._id}" />
+        <span class="break-words">${advice.bengali || advice.text || "Untitled Advice"}</span>
+      `;
+      container.appendChild(label);
+    });
+  } catch (err) {
+    console.error("Failed to load advices:", err);
+    document.getElementById("adviceContainer").innerHTML =
+      `<p class="text-red-500">Error loading advices: ${err.message}</p>`;
+  }
+}
+
+// === Add Selected Medicines to Drug History Table ===
+document.getElementById("addSelectedMedicines").addEventListener("click", () => {
+  const selectedIds = Array.from(document.querySelectorAll(".medicine-checkbox:checked")).map(cb => cb.value);
+  const tbody = document.getElementById("drugHistoryTable");
+
+  selectedIds.forEach(id => {
+    const med = medicineData.find(m => m._id === id);
+    if (!med) return;
+    if (Array.from(tbody.querySelectorAll("tr")).some(r => r.dataset.id === id)) return;
+
+    const tr = document.createElement("tr");
+    tr.dataset.id = id;
+    tr.innerHTML = `
+      <td class="p-2">${med.brand}</td>
+      <td class="p-2">${med.brand}</td>
+      <td class="p-2">${med.strength}</td>
+      <td class="p-2"><input type="text" class="dosage-input border p-1 w-full" placeholder="e.g., 1+0+1"></td>
+      <td class="p-2"><input type="text" class="duration-input border p-1 w-full" placeholder="e.g., 5 days"></td>
+      <td class="p-2"><input type="text" class="instruction-input border p-1 w-full" placeholder="Doctor's instruction"></td>
+      <td class="p-2 text-center">
+        <button type="button" class="delete-row bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+});
+// Reference to table body
+const tbody = document.getElementById("drugHistoryTable");
+// --- Add Blank Row ---
+document.getElementById("addBlankRow").addEventListener("click", () => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td class="p-2"><input type="text" class="medicine-input border p-1 w-full" placeholder="Medicine name"></td>
+    <td class="p-2"><input type="text" class="brand-input border p-1 w-full" placeholder="Brand"></td>
+    <td class="p-2"><input type="text" class="strength-input border p-1 w-full" placeholder="Strength"></td>
+    <td class="p-2"><input type="text" class="dosage-input border p-1 w-full" placeholder="e.g., 1+0+1"></td>
+    <td class="p-2"><input type="text" class="duration-input border p-1 w-full" placeholder="e.g., 5 days"></td>
+    <td class="p-2"><input type="text" class="instruction-input border p-1 w-full" placeholder="Doctor's instruction"></td>
+    <td class="p-2 text-center">
+      <button type="button" class="delete-row bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+    </td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// === Delete row from Drug History ===
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("delete-row")) e.target.closest("tr").remove();
+});
+
+// === Init ===
+document.addEventListener("DOMContentLoaded", () => {
+  loadMedicines();
+  loadAdvices();
+});
+</script>
+
+  
+   
+
+ 
+
+
+
+
+
+<!-- Next Visit -->
+    <section class="bg-gray-100 p-4 rounded-lg w-[1000px] mx-auto">
+      <h3 class="font-semibold mb-4 text-blue-600">Next Visit</h3>
+      <table class="w-full border border-gray-300" id="nextVisitTable">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="border p-2">Time</th>
+            <th class="border p-2">Date</th>
+            <th class="border p-2">No of Visit</th>
+            <th class="border p-2">Referred By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="border p-2"><input type="time" class="w-full border p-1 rounded"></td>
+            <td class="border p-2"><input type="date" class="w-full border p-1 rounded"></td>
+            <td class="border p-2"><input type="number" class="w-full border p-1 rounded" placeholder="Visit #"></td>
+            <td class="border p-2"><input type="text" class="w-full border p-1 rounded" placeholder="Doctor/Referrer"></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Appointment Check Button -->
+      <div class="mt-4 text-right">
+        <a href="appointment.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Check Appointments</a>
+      </div>
+    </section>
+
+  <section class="w-[800px] mx-auto">
+  <h3 class="text-xl font-bold text-blue-600 mb-4">📄 Reports</h3>
+  <div id="reportContainer" class="space-y-4"></div>
+  <button id="addReport" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+    Add Report
+  </button>
+</section>
+
+<script>
+  const reportContainer = document.getElementById("reportContainer");
+  const addReportBtn = document.getElementById("addReport");
+
+  addReportBtn.addEventListener("click", () => {
+    const card = document.createElement("div");
+    card.className = "report-card relative bg-white p-4 rounded-xl shadow-md flex flex-col space-y-2";
+
+    // Header with close icon
+    const header = document.createElement("div");
+    header.className = "flex justify-between items-center";
+    const title = document.createElement("span");
+    title.textContent = "New Report";
+    title.className = "font-semibold text-blue-600";
+    const closeBtn = document.createElement("button");
+    closeBtn.innerHTML = "&times;";
+    closeBtn.className = "text-red-500 text-xl font-bold hover:text-red-700";
+    closeBtn.addEventListener("click", () => card.remove());
+    header.appendChild(title);
+    header.appendChild(closeBtn);
+    card.appendChild(header);
+
+    // Report inputs
+    const inputs = document.createElement("div");
+    inputs.className = "flex flex-col space-y-2";
+    inputs.innerHTML = `
+      <input type="date" class="border p-2 rounded w-full" placeholder="Select date">
+      <input type="text" placeholder="Report Name" class="border p-2 rounded w-full">
+      <input type="file" class="w-full">
+    `;
+    card.appendChild(inputs);
+
+    reportContainer.appendChild(card);
+  });
+</script>
+
+<style>
+  .report-card {
+    background: #fef9f9;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .report-card:hover {
+    transform: translateY(-2px);
+  }
+</style>
+
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+     const tableBody = document.getElementById("notesBody");
+
+  // Add new row
+  document.getElementById("addRow").addEventListener("click", () => {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+      <td class="border p-2">
+        <input type="text" class="w-full border p-1 rounded" placeholder="Enter note...">
+      </td>
+      <td class="border p-2">
+        <div class="space-y-3">
+          <div>
+            <h4 class="font-semibold text-sm text-gray-700 mb-1">(1–8)</h4>
+            <div class="flex flex-wrap gap-2">
+              <label><input type="checkbox" value="1"><span>1</span></label>
+              <label><input type="checkbox" value="2"><span>2</span></label>
+              <label><input type="checkbox" value="3"><span>3</span></label>
+              <label><input type="checkbox" value="4"><span>4</span></label>
+              <label><input type="checkbox" value="5"><span>5</span></label>
+              <label><input type="checkbox" value="6"><span>6</span></label>
+              <label><input type="checkbox" value="7"><span>7</span></label>
+              <label><input type="checkbox" value="8"><span>8</span></label>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm text-gray-700 mb-1">(A–E)</h4>
+            <div class="flex flex-wrap gap-2">
+              <label><input type="checkbox" value="A"><span>A</span></label>
+              <label><input type="checkbox" value="B"><span>B</span></label>
+              <label><input type="checkbox" value="C"><span>C</span></label>
+              <label><input type="checkbox" value="D"><span>D</span></label>
+              <label><input type="checkbox" value="E"><span>E</span></label>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="teethSelected" class="teeth-selected">
+      </td>
+      <td class="border p-2">
+        <input type="date" class="border p-1 rounded w-full">
+      </td>
+      <td class="border p-2 text-center">
+        <button type="button" class="bg-red-500 text-white px-2 py-1 rounded deleteRow">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(newRow);
+  });
+
+  // Delete row
+  tableBody.addEventListener("click", (e) => {
+    if(e.target.classList.contains("deleteRow")) {
+      const row = e.target.closest("tr");
+      row.remove();
+    }
+  });
+    // Init Materialize select
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+    });
+
+    // Final redirect
+    document.getElementById('finalSubmit').addEventListener('click', () => {
+      window.location.href = "PaymentnContract.html";
+    });
+
+    // Add dynamic report row
+    document.getElementById('addReportRow').addEventListener('click', () => {
+      const tbody = document.getElementById('report-table-body');
+      const rowCount = tbody.rows.length + 1;
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td class="border border-gray-300 p-3 text-center">${rowCount}</td>
+        <td class="border border-gray-300 p-3"><input type="date" class="w-full border p-1 rounded"></td>
+        <td class="border border-gray-300 p-3"><input type="text" class="w-full border p-1 rounded" placeholder="Report Name"></td>
+        <td class="border border-gray-300 p-3"><input type="file" class="w-full border p-1 rounded"></td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    // Collect selected teeth into hidden input
+    document.addEventListener("change", (e) => {
+      if (e.target.type === "checkbox") {
+        const parent = e.target.closest("td");
+        if (parent) {
+          const hidden = parent.querySelector(".teeth-selected");
+          if (hidden) {
+            const selected = Array.from(parent.querySelectorAll("input[type=checkbox]:checked"))
+                                  .map(cb => cb.value);
+            hidden.value = selected.join(",");
+            console.log("Selected Teeth:", hidden.value);
+          }
+        }
+      }
+    });
+
+
+
+    document.getElementById('savePrintBtn').addEventListener('click', async () => {
+    const patientId = localStorage.getItem("patientId"); // or get from URL
+    if (!patientId) return alert("No patient selected!");
+
+    // 1️⃣ C/C
+    const cc = Array.from(document.querySelectorAll(".cc-checkbox:checked"))
+                    .map(cb => cb.nextSibling.textContent.trim());
+    const ccOther = document.getElementById("ccOther").value;
+    if(ccOther) cc.push(ccOther);
+
+    // 2️⃣ H/O
+    const ho = Array.from(document.querySelectorAll(".ho-checkbox:checked"))
+                    .map(cb => cb.nextSibling.textContent.trim());
+    const hoOther = document.getElementById("hoOther").value;
+    if(hoOther) ho.push(hoOther);
+
+    // 3️⃣ Treatment Plan
+    const treatmentPlan = Array.from(document.querySelectorAll("#notesBody tr")).map(tr => ({
+        note: tr.querySelector("input[type=text]").value,
+        teeth: tr.querySelector(".teeth-selected").value.split(","),
+        date: tr.querySelector("input[type=date]").value
+    }));
+
+    // 4️⃣ Drug History
+    const drugHistory = Array.from(document.querySelectorAll("#drugHistoryTable tr")).map(tr => ({
+        medicine: tr.querySelector(".medicine-input")?.value || tr.cells[0].textContent,
+        brand: tr.querySelector(".brand-input")?.value || tr.cells[1].textContent,
+        strength: tr.querySelector(".strength-input")?.value || tr.cells[2].textContent,
+        dosage: tr.querySelector(".dosage-input")?.value,
+        duration: tr.querySelector(".duration-input")?.value,
+        instruction: tr.querySelector(".instruction-input")?.value
+    }));
+
+    // 5️⃣ Advices
+    const advices = Array.from(document.querySelectorAll(".advice-checkbox:checked")).map(cb => cb.value);
+
+    // 6️⃣ Reports
+    const reports = Array.from(document.querySelectorAll("#reportContainer .report-card")).map(card => ({
+        date: card.querySelector("input[type=date]").value,
+        name: card.querySelector("input[type=text]").value,
+        file: card.querySelector("input[type=file]").files[0]?.name || ""
+    }));
+
+    // 7️⃣ Optional: Next Visit info
+    const nextVisitRow = document.querySelector("#nextVisitTable tbody tr");
+    const nextVisit = {
+        time: nextVisitRow.querySelector('input[type=time]').value,
+        date: nextVisitRow.querySelector('input[type=date]').value,
+        visitNumber: nextVisitRow.querySelector('input[type=number]').value,
+        referredBy: nextVisitRow.querySelector('input[type=text]').value
+    };
+
+    try {
+        const res = await fetch(`http://localhost:5000/patients/update/${patientId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cc, ho, oc: [], treatmentPlan, drugHistory, advices, reports, nextVisit })
+        });
+
+        const data = await res.json();
+        if(data.patient) {
+            alert("Patient info saved successfully!");
+            window.location.href = "PaymentnContract.html"; // redirect
+        } else {
+            alert("Failed to save: " + (data.error || "Unknown error"));
+        }
+    } catch(err) {
+        alert("Error: " + err.message);
+    }
+});
+
+  </script>
+</body>
+</html>
+

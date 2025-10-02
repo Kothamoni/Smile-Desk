@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smile Dental Care HomePage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+  
+  <!-- Navbar -->
+<nav class="bg-blue-400 shadow-md">
+  <div class="mx-auto flex justify-between items-center px-4 py-4">
+    <!-- Title -->
+    <h1 class="text-2xl font-bold text-white drop-shadow-lg">
+      Smile Dental Care
+    </h1>
+
+    <!-- Menu -->
+    <ul class="flex space-x-1 text-white font-medium">
+      <li><a href="#patient-entry" class="hover:text-purple-500">Pateint Registration</a></li>
+      <li><a href="#" class="hover:text-purple-500">Prescriptions</a></li>
+      <li><a href="#" class="hover:text-purple-500">View All</a></li>
+      <li><a href="listofdrugs.html" class="hover:text-purple-500">Drug Checker</a></li>
+      <li><a href="appointment.html" class="hover:text-purple-500">Appointment</a></li>
+      <li ><a href="patientSearch.html" class="hover:text-purple-500">Search Patient</a></li>
+ 
+      <li><a href="PaymentnContract.html" class="hover:text-purple-500">Payment & Contract</a></li>
+    </ul>
+  </div>
+</nav>
+<br>
+
+  <h2 class="mt-6 text-center text-4xl font-bold text-blue-600 drop-shadow-lg">
+  Your Satisfaction We Care
+</h2>
+
+  <!-- Hero Section -->
+  <section class="relative w-full h-[500px] mt-12">
+    <img src="/front-end/image/section.webp" class="w-full h-full object-cover">
+  </section>
+
+  <!-- Patient Registration -->
+  <section id="patient-entry" class="flex flex-col items-center my-8">
+    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Patient Registration</h2>
+
+    <form id="patientForm" class="bg-gray-100 p-6 rounded-lg shadow-md w-[520px]">
+      <label class="block text-lg font-semibold mb-1">Name:</label>
+      <input id="name" name="name" type="text" class="w-full border p-2 mb-3 rounded" required>
+
+      
+
+      <label class="block text-lg font-semibold mb-1">Age:</label>
+    <input id="age" name="age" type="number" min="1" class="w-full border p-2 mb-3 rounded">
+
+
+      <label class="block text-lg font-semibold mb-1">Gender:</label>
+      <select id="gender" name="gender"
+        class="w-full border p-2 mb-3 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+<br>
+      <label class="block text-lg font-semibold mb-1">Address:</label>
+      <input id="address" name="address" type="text" class="w-full border p-2 mb-3 rounded">
+
+      <label class="block text-lg font-semibold mb-1">Phone Number:</label>
+      <input id="phone" name="phone" type="text" class="w-full border p-2 mb-4 rounded">
+
+      <button type="submit" class="w-full bg-blue-400 text-white py-2 rounded hover:bg-blue-500">
+        Save
+      </button>
+    </form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const elems = document.querySelectorAll("select");
+    M.FormSelect.init(elems);
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="homepage.js"></script>
+<!-- Success Popup -->
+<div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-[400px] text-center">
+    <h2 class="text-xl font-bold text-green-600 mb-4">✅ Patient Registered</h2>
+    <p id="patientIdText" class="text-gray-700 mb-6"></p>
+    <button id="goTreatment" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      Continue to Treatment
+    </button>
+  </div>
+</div>
+
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

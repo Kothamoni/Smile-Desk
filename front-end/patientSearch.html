@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Navbar -->
+<nav class="bg-blue-400 shadow-md">
+  <div class="mx-auto flex justify-between items-center px-4 py-4">
+    <h1 class="text-2xl font-bold text-white drop-shadow-lg">Smile Dental Care</h1>
+    <ul class="flex space-x-2 text-white font-medium">
+      <li><a href="homepage.html" class="hover:text-purple-500">Home</a></li>
+      <li><a href="#" class="hover:text-purple-500">Prescriptions</a></li>
+      <li><a href="#" class="hover:text-purple-500">View All</a></li>
+      <li><a href="listofdrugs.html" class="hover:text-purple-500">Drug Checker</a></li>
+      <li><a href="appointment.html" class="hover:text-purple-500">Appointment</a></li>
+      <li class="hover:text-purple-500">Search Patient</li>
+      <li><a href="PaymentnContract.html" class="hover:text-purple-500">Payment & Contract</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mx-auto p-6">
+
+    <!-- Header + Search -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">All Patients</h1>
+        <div class="relative">
+            <button id="search-btn" class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors duration-200">🔍</button>
+            <div id="search-container" class="absolute right-0 mt-2 w-72 bg-white p-4 rounded-lg shadow-lg z-10 hidden">
+                <input type="text" id="patient-search-input" placeholder="Search by Patient ID or Name..." class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <ul id="search-results" class="mt-2 space-y-2"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient cards grid -->
+    <div id="patient-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div id="loading-spinner" class="col-span-full text-center py-10">
+            <svg class="animate-spin h-10 w-10 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-2 text-gray-600">Loading patients...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const patientList = document.getElementById("patient-list");
+    const searchBtn = document.getElementById("search-btn");
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("patient-search-input");
+    const searchResults = document.getElementById("search-results");
+
+    let allPatients = [];
+
+    // Fetch patients from backend
+    const fetchAllPatients = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/patients");
+            if (!response.ok) throw new Error("Failed to fetch patients.");
+            allPatients = await response.json();
+            displayPatients(allPatients);
+        } catch (error) {
+            console.error(error);
+            patientList.innerHTML = `<p class="text-red-500 text-center col-span-full">Failed to load patient data.</p>`;
+        }
+    };
+
+    // Display patients as clean cards
+    const displayPatients = (patients) => {
+        patientList.innerHTML = '';
+        if (patients.length === 0) {
+            patientList.innerHTML = `<p class="text-gray-500 text-center col-span-full">No patients found.</p>`;
+            return;
+        }
+
+        patients.forEach(patient => {
+            const card = document.createElement('div');
+            card.className = `
+                card bg-white rounded-xl shadow-lg p-6 cursor-pointer
+                hover:shadow-2xl hover:scale-105 transition-transform duration-300
+                flex flex-col justify-between
+            `;
+            card.dataset.id = patient.patientId;
+            card.innerHTML = `
+                <div class="flex items-center mb-4">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xl font-bold">${patient.name.charAt(0)}</div>
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-gray-800">${patient.name}</h2>
+                        <p class="text-gray-500 text-sm">ID: <span class="font-medium text-gray-700">${patient.patientId}</span></p>
+                    </div>
+                </div>
+                <p class="text-gray-600">Age: <span class="font-medium text-gray-800">${patient.age || 'N/A'}</span></p>
+                <p class="text-gray-600 mt-1">Gender: <span class="font-medium text-gray-800">${patient.gender || 'N/A'}</span></p>
+                <button class=" viewBtn mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                    View Details
+                </button>
+            `;
+
+            card.addEventListener('click', (e) => {
+                //localStorage.setItem('patientId', patient.patientId);
+                //window.location.href = 'treatment.html';
+                if (e.target.classList.contains("viewBtn")) {
+    const patientId = e.target.closest(".card").dataset.id;
+    // Save ID in localStorage (easy way to pass between pages)
+    localStorage.setItem("patientId", patientId);
+    // Redirect
+    window.location.href = "treatment.html";
+  }
+            });
+
+            patientList.appendChild(card);
+        });
+    };
+
+    // Search functionality
+    searchBtn.addEventListener('click', () => {
+        searchContainer.classList.toggle('hidden');
+        searchInput.focus();
+    });
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filtered = allPatients.filter(p => p.patientId.toLowerCase().includes(query) || p.name.toLowerCase().includes(query));
+        displayPatients(filtered);
+
+        searchResults.innerHTML = '';
+        if (query && filtered.length > 0) {
+            filtered.forEach(patient => {
+                const li = document.createElement('li');
+                li.className = 'p-2 rounded-md hover:bg-gray-100 cursor-pointer';
+                li.textContent = `${patient.name} (${patient.patientId})`;
+                li.addEventListener('click', () => {
+                    localStorage.setItem('patientId', patient.patientId);
+                    window.location.href = 'treatment.html';
+                });
+                searchResults.appendChild(li);
+            });
+        } else if(query) {
+            searchResults.innerHTML = `<li class="p-2 text-gray-400">No results found.</li>`;
+        }
+    });
+
+    fetchAllPatients();
+});
+</script>
+
+</body>
+</html>

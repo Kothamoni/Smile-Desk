@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-50 p-6">
+
+<!-- Navbar -->
+<nav class="bg-blue-400 shadow-md">
+  <div class="mx-auto flex justify-between items-center px-4 py-4">
+    <h1 class="text-2xl font-bold text-white drop-shadow-lg">Smile Dental Care</h1>
+    <ul class="flex space-x-1.5 text-white font-medium">
+      <li><a href="#patient-entry" class="hover:text-purple-500">Patient Entry</a></li>
+      <li><a href="#" class="hover:text-purple-500">Prescriptions</a></li>
+      <li><a href="#" class="hover:text-purple-500">View All</a></li>
+      <li><a href="listofdrugs.html" class="hover:text-purple-500">Drug Checker</a></li>
+      <li><a href="appointment.html" class="hover:text-purple-500">Appointment</a></li>
+      <li<a href="patientSearch.html" class="hover:text-purple-500">Search Patient</a> >/li>
+      <li><a href="PaymentnContract.html" class="hover:text-purple-500">Payment & Contract</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Patient Info Card -->
+<div id="patientInfoCard" class="hidden bg-pink-50 shadow-lg rounded-2xl p-6 mb-6 mt-10 mx-auto w-96 border-2 border-pink-200 transform transition duration-300 hover:scale-105">
+  <h3 class="font-extrabold text-2xl mb-4 text-pink-600 text-center">💖 Patient Info 💖</h3>
+  <p class="mb-2 text-gray-700"><strong class="text-pink-500">ID:</strong> <span id="patientIdDisplay">---</span></p>
+  <p class="mb-2 text-gray-700"><strong class="text-pink-500">Name:</strong> <span id="patientNameDisplay">---</span></p>
+  <p class="mb-2 text-gray-700"><strong class="text-pink-500">Age:</strong> <span id="patientAgeDisplay">---</span></p>
+  <p class="text-gray-700"><strong class="text-pink-500">Gender:</strong> <span id="patientGenderDisplay">---</span></p>
+</div>
+
+<!-- Conditions & Investigations -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+  <div id="ccConditions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">CC</h3>
+    <div></div>
+  </div>
+  <div id="hoConditions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">HO</h3>
+    <div></div>
+  </div>
+  <div id="ssConditions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">SS</h3>
+    <div></div>
+  </div>
+  <div id="dxConditions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">DX</h3>
+    <div></div>
+  </div>
+  <div id="tpConditions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">TP</h3>
+    <div></div>
+  </div>
+  <div id="investigationsOptions" class="bg-gray-100 p-4 rounded-lg shadow-sm">
+    <h3 class="font-semibold mb-2">Investigations</h3>
+    <div></div>
+  </div>
+</div>
+
+<!-- Treatment Notes -->
+<div class="mb-6">
+  <h3 class="font-semibold mb-2">Treatment Notes</h3>
+  <table class="w-full border-collapse border border-gray-300">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="border p-2">Note</th>
+        <th class="border p-2">Teeth Involved</th>
+        <th class="border p-2">Date</th>
+        <th class="border p-2">Action</th>
+      </tr>
+    </thead>
+    <tbody id="notesBody"></tbody>
+  </table>
+  <button id="addRow" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add Note</button>
+</div>
+
+<!-- Drug History -->
+<div class="mb-6">
+  <h3 class="font-semibold mb-2">Drug History</h3>
+  <table class="w-full border-collapse border border-gray-300" id="drugTable">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="border p-2">Medicine</th>
+       
+        <th class="border p-2">Dosage</th>
+        <th class="border p-2">Duration</th>
+        <th class="border p-2">Instructions</th>
+        <th class="border p-2">Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <a href="https://medex.com.bd/" class="font-semibold color-blue-300">Go to Medex</a>
+  </table>
+  <button id="addDrugRow" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add Drug</button>
+</div>
+
+<!-- Reports Upload -->
+<!-- Reports Upload -->
+<div class="mb-6 bg-white p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto">
+  <h3 class="font-bold text-xl mb-4 text-blue-600 text-center">📄 Patient Reports</h3>
+  
+  <div class="flex gap-2 mb-4">
+    <input type="file" id="reportUpload" multiple class="border p-2 rounded flex-1">
+    <button id="addReportBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add Report</button>
+  </div>
+
+  <div id="reportContainer" class="space-y-2"></div>
+</div>
+
+
+<!-- Next Visit -->
+<div class="mb-6 bg-white p-6 rounded-2xl shadow-md w-full max-w-lg mx-auto">
+  <h3 class="font-bold text-xl mb-4 text-blue-600 text-center">📅 Next Visit Booking</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="nextVisitDate" class="block mb-1 font-medium text-gray-700">Date</label>
+      <input type="date" id="nextVisitDate" class="border p-2 rounded w-full">
+    </div>
+    <div>
+      <label for="nextVisitTime" class="block mb-1 font-medium text-gray-700">Time</label>
+      <input type="time" id="nextVisitTime" class="border p-2 rounded w-full">
+    </div>
+    <div>
+      <label for="nextVisitNo" class="block mb-1 font-medium text-gray-700">Visit #</label>
+      <input type="number" id="nextVisitNo" placeholder="1" class="border p-2 rounded w-full">
+    </div>
+    <div> 
+      <label for="nextVisitRef" class="block mb-1 font-medium text-gray-700">Referred By</label>
+      <input type="text" id="nextVisitRef" placeholder="Doctor/Clinic" class="border p-2 rounded w-full">
+    </div>
+  </div>
+</div>
+
+<button id="savePrintBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition mb-6">Save & Generate PDF</button>
+
+<!-- JS -->
+ <!-- jsPDF from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- jsPDF AutoTable plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+
+
+
+<script src="x.js">const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const patientId = localStorage.getItem("patientId");
+  const patientInfoCard = document.getElementById("patientInfoCard");
+
+  if (!patientId) {
+    Swal.fire("No Patient Selected", "Please go back and select a patient first.", "warning");
+    return;
+  }
+
+  try {
+    // Fetch patient details from backend
+    const res = await fetch(`http://localhost:5000/patients/${patientId}`);
+    if (!res.ok) throw new Error("Failed to fetch patient data");
+
+    const patient = await res.json();
+
+    // -------- Fill Patient Info --------
+    patientInfoCard.classList.remove("hidden");
+    document.getElementById("patientIdDisplay").textContent = patient.patientId || "---";
+    document.getElementById("patientNameDisplay").textContent = patient.name || "---";
+    document.getElementById("patientAgeDisplay").textContent = patient.age || "---";
+    document.getElementById("patientGenderDisplay").textContent = patient.gender || "---";
+
+    // -------- Fill Conditions (CC, HO, SS, DX, TP) --------
+    function fillSection(divId, data) {
+      const container = document.getElementById(divId).querySelector("div");
+      container.innerHTML = "";
+      if (Array.isArray(data)) {
+        data.forEach(item => {
+          container.innerHTML += `<p class="text-sm text-gray-700">- ${item}</p>`;
+        });
+      }
+    }
+    fillSection("ccConditions", patient.cc);
+    fillSection("hoConditions", patient.ho);
+    fillSection("ssConditions", patient.ss);
+    fillSection("dxConditions", patient.dx);
+    fillSection("tpConditions", patient.tp);
+    fillSection("investigationsOptions", patient.investigations);
+
+    // -------- Fill Treatment Notes --------
+    const notesBody = document.getElementById("notesBody");
+    notesBody.innerHTML = "";
+    if (Array.isArray(patient.treatmentNotes)) {
+      patient.treatmentNotes.forEach(note => {
+        notesBody.innerHTML += `
+          <tr>
+            <td class="border p-2">${note.note || ""}</td>
+            <td class="border p-2">${note.teeth || ""}</td>
+            <td class="border p-2">${new Date(note.date).toLocaleDateString()}</td>
+            <td class="border p-2"><button class="bg-red-500 text-white px-2 py-1 rounded">Delete</button></td>
+          </tr>`;
+      });
+    }
+
+    // -------- Fill Drug History --------
+    const drugTableBody = document.querySelector("#drugTable tbody");
+    drugTableBody.innerHTML = "";
+    if (Array.isArray(patient.drugHistory)) {
+      patient.drugHistory.forEach(drug => {
+        drugTableBody.innerHTML += `
+          <tr>
+            <td class="border p-2">${drug.medicine || ""}</td>
+            <td class="border p-2">${drug.dosage || ""}</td>
+            <td class="border p-2">${drug.duration || ""}</td>
+            <td class="border p-2">${drug.instructions || ""}</td>
+            <td class="border p-2"><button class="bg-red-500 text-white px-2 py-1 rounded">Delete</button></td>
+          </tr>`;
+      });
+    }
+
+    // -------- Fill Reports --------
+    const reportContainer = document.getElementById("reportContainer");
+    reportContainer.innerHTML = "";
+    if (Array.isArray(patient.reports)) {
+      patient.reports.forEach(rep => {
+        reportContainer.innerHTML += `
+          <div class="p-2 border rounded bg-gray-50">
+            <a href="http://localhost:5000/images/${rep.file}" target="_blank" class="text-blue-600">${rep.name || "Report"}</a>
+          </div>`;
+      });
+    }
+
+    // -------- Fill Next Visit --------
+    if (patient.nextVisit) {
+      document.getElementById("nextVisitDate").value = patient.nextVisit.date
+        ? new Date(patient.nextVisit.date).toISOString().split("T")[0]
+        : "";
+      document.getElementById("nextVisitTime").value = patient.nextVisit.time || "";
+      document.getElementById("nextVisitNo").value = patient.nextVisit.noOfVisits || "";
+      document.getElementById("nextVisitRef").value = patient.nextVisit.referredBy || "";
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "Could not load patient data", "error");
+  }
+});
+
+
+
+
+
+</script>
+</body>
+</html>

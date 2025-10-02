@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dentist Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        input[type="checkbox"] {
+            accent-color: #3b82f6;
+            width: 18px;
+            height: 18px;
+        }
+        .report-card {
+            background: #fef9f9;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <nav class="bg-blue-400 shadow-md">
+        <div class="mx-auto flex justify-between items-center px-4 py-4">
+            <h1 class="text-2xl font-bold text-white drop-shadow-lg">Smile Dental Care</h1>
+            <ul class="flex space-x-1 text-white font-medium">
+                <li><a href="homepage.html" class="hover:text-purple-500">Home</a></li>
+                <li><a href="#" class="hover:text-purple-500">Prescriptions</a></li>
+                <li><a href="#" class="hover:text-purple-500">View All</a></li>
+                <li><a href="listofdrugs.html" class="hover:text-purple-500">Drug Checker</a></li>
+                <li><a href="appointment.html" class="hover:text-purple-500">Appointment</a></li>
+                <li><a href="patientSearch.html" class="hover:text-purple-500">Search Patient</a></li>
+                <li><a href="PaymentnContract.html" class="hover:text-purple-500">Payment & Contract</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <br>
+
+    <!-- Patient Info Card -->
+    <div id="patientInfoCard" class="hidden bg-pink-50 shadow-lg rounded-2xl p-6 mb-4 mt-10 ml-[35%] w-96 border-2 border-pink-200 transform transition duration-300 hover:scale-105">
+        <h3 class="font-extrabold text-2xl mb-4 text-pink-600 text-center">💖 Patient Info 💖</h3>
+        <p class="mb-2 text-gray-700"><strong class="text-pink-500">ID:</strong> <span id="patientIdDisplay">---</span></p>
+        <p class="mb-2 text-gray-700"><strong class="text-pink-500">Name:</strong> <span id="patientNameDisplay">---</span></p>
+        <p class="mb-2 text-gray-700"><strong class="text-pink-500">Age:</strong> <span id="patientAgeDisplay">---</span></p>
+        <p class="text-gray-700"><strong class="text-pink-500">Gender:</strong> <span id="patientGenderDisplay">---</span></p>
+    </div>
+
+    <main class="p-6 space-y-6">
+
+        <!-- Medical Info -->
+        <div id="medicalInfo" class="mt-6 w-[1000px] mx-auto">
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">C/C</h3>
+                    <div id="ccConditions" class="grid grid-cols-2 gap-2"></div>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">H/O</h3>
+                    <div id="hoConditions" class="grid grid-cols-3 gap-2"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div id="ssConditions" class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">S/S (Sign & Symptom)</h3>
+                    <div class="grid grid-cols-2 gap-2"></div>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2">Investigations</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label><input type="checkbox" class="filled-in"><span class="ml-1">X-ray</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <h3 class="font-semibold mb-2">Diagnosis (DX)</h3>
+                <div id="dxConditions" class="grid grid-cols-2 gap-2"></div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                <h3 class="font-semibold mb-2">Treatment Plan</h3>
+                <div id="tpConditions" class="grid grid-cols-2 gap-2"></div>
+            </div>
+        </div>
+
+        <!-- Treatment / Special Notes -->
+        <section class="bg-gray-100 p-4 rounded-lg w-[1000px] mx-auto">
+            <h3 class="font-semibold mb-4 text-blue-600">Treatment / Special Notes</h3>
+            <table class="w-full border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="border p-2">Note</th>
+                        <th class="border p-2">Teeth Involved</th>
+                        <th class="border p-2">Date</th>
+                        <th class="border p-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="notesBody">
+                    <!-- Rows will be dynamically added -->
+                </tbody>
+            </table>
+            <div class="mt-3">
+                <button id="addRow" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">Add Row</button>
+            </div>
+        </section>
+
+        <!-- Drug History -->
+        <section class="bg-gray-50 p-4 rounded-lg w-[1000px] mx-auto">
+            <h3 class="font-semibold mb-4 text-green-600">💊 Drug History</h3>
+            <table class="w-full border border-gray-300" id="drugTable">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="border p-2">Medicine Name</th>
+                        <th class="border p-2">Generic Name</th>
+                        <th class="border p-2">Dosage</th>
+                        <th class="border p-2">Duration</th>
+                        <th class="border p-2">Instructions</th>
+                        <th class="border p-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added -->
+                </tbody>
+            </table>
+            <div class="mt-3">
+                <button id="addDrugRow" class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600">Add Medicine</button>
+            </div>
+        </section>
+
+        <!-- Next Visit -->
+        <section class="bg-gray-100 p-4 rounded-lg w-[1000px] mx-auto">
+            <h3 class="font-semibold mb-4 text-purple-600">📅 Next Visit</h3>
+            <div class="grid grid-cols-4 gap-4">
+                <input type="date" id="nextVisitDate" class="border p-2 rounded" placeholder="Date">
+                <input type="time" id="nextVisitTime" class="border p-2 rounded" placeholder="Time">
+                <input type="number" id="nextVisitNo" class="border p-2 rounded" placeholder="No. of Visits">
+                <input type="text" id="nextVisitRef" class="border p-2 rounded" placeholder="Referred By">
+            </div>
+        </section>
+
+        <!-- Reports -->
+        <section class="bg-gray-50 p-4 rounded-lg w-[1000px] mx-auto">
+            <h3 class="font-semibold mb-4 text-yellow-600">📁 Reports</h3>
+            <input type="file" id="reportUpload" multiple class="mb-2">
+            <div id="reportContainer"></div>
+        </section>
+
+        <!-- Save & Print -->
+        <div class="w-[1000px] mx-auto text-center">
+            <button id="savePrintBtn" class="bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700 text-xl">💾 Save & Print</button>
+        </div>
+
+    </main>
+
+    <!-- Link external JS -->
+    <script src="x.js"></script>
+</body>
+</html>

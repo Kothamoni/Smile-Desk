@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ma Dental Care - Medicines</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-400 shadow-md">
+    <div class="mx-auto flex justify-between items-center p-4">
+      <h1 class="ml-2 text-3xl font-bold drop-shadow-lg text-white">Ma Dental Care</h1>
+      <ul class="flex space-x-3 text-white font-medium">
+        <li><a href="homepage.html" class="hover:text-purple-500">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Medicines Section -->
+  <section class="w-[95%] mx-auto mt-6">
+    <h3 class="text-xl font-bold text-blue-600 mb-4">💊 Medicines</h3>
+    <div id="medicineContainer" class="overflow-x-auto bg-white rounded-lg shadow-md p-4">
+      <p id="loadingMedicineText" class="text-gray-500">Loading medicines...</p>
+    </div>
+  </section>
+
+<script>
+async function loadMedicines() {
+  const container = document.getElementById("medicineContainer");
+
+  try {
+    const res = await fetch("http://localhost:5000/medicines");
+    const medicines = await res.json();
+
+    // Clear container
+    container.innerHTML = "";
+
+    // Create table
+    const table = document.createElement("table");
+    table.className = "min-w-full divide-y divide-gray-200";
+
+    // Table header
+    table.innerHTML = `
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Brand</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Generic</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Strength</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Type</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Uses</th>
+          <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Manufacturer</th>
+        </tr>
+      </thead>
+    `;
+
+    // Table body
+    const tbody = document.createElement("tbody");
+    tbody.className = "divide-y divide-gray-200";
+
+    medicines.forEach(med => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td class="px-4 py-2">${med.brand}</td>
+        <td class="px-4 py-2">${med.generic}</td>
+        <td class="px-4 py-2">${med.strength}</td>
+        <td class="px-4 py-2">${med.type}</td>
+        <td class="px-4 py-2">${med.uses}</td>
+        <td class="px-4 py-2">${med.manufacturer}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    container.appendChild(table);
+
+  } catch (err) {
+    container.innerHTML = `<p class="text-red-500">Failed to load medicines: ${err.message}</p>`;
+  }
+}
+
+// Load medicines on page load
+document.addEventListener("DOMContentLoaded", loadMedicines);
+</script>
+
+</body>
+</html>
