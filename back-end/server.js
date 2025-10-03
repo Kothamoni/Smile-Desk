@@ -27,11 +27,11 @@ app.use('/', require('./routes/user.routes')); // login/signup API
 app.use('/images', express.static(path.join(__dirname, 'image')));
 
 // Serve frontend files
-app.use(express.static(path.join(__dirname, '../frontend'))); // <-- path to your frontend folder
+app.use(express.static(path.join(__dirname, '../front-end'))); // <-- path to your frontend folder
 
 // Catch-all route: sends your main HTML for any other request
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'login.html')); // <-- replace with your main HTML
+  res.sendFile(path.join(__dirname, '../front-end', 'login.html')); // <-- replace with your main HTML
 });
 
 // Start server
